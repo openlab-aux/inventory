@@ -11,6 +11,10 @@ spec:
     repoURL: 'https://charts.bitnami.com/bitnami'
     targetRevision: 13.9.4
     chart: mongodb
+    helm:
+      values: |
+        persistence:
+          storageClass: openebs-hostpath
   sources: []
   project: default
   syncPolicy:
