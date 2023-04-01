@@ -1,21 +1,35 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
-  name: mongodb
-  namespace: argocd
+  name: mongo
 spec:
-  destination:
-    name: in-cluster
-    namespace: inventory-staging
-  source:
-    repoURL: 'https://groundhog2k.github.io/helm-charts/'
-    targetRevision: 0.5.13
-    chart: mongodb
-    helm:
-      values: |
-        storage:
-          className: openebs-hostpath
-  sources: []
-  project: default
-  syncPolicy:
-    automated: null
+  selector:
+    matchLabels:
+      app: mongo
+  serviceName: mongo
+  replicas: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: mongodb
+        image: docker.io/mongo:6.0.5
+        ports:
+        - containerPort: 27017
+          name: mongo
+        volumeMounts:
+        - name: mongo
+          mountPath: /data/db
+  volumeClaimTemplates:
+  - metadata:
+      name: mongo
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "openebs-hostpath"
+      resources:
+        requests:
+          storage: 5Gi
