@@ -8,13 +8,13 @@ spec:
     name: in-cluster
     namespace: inventory-staging
   source:
-    repoURL: 'https://charts.bitnami.com/bitnami'
-    targetRevision: 13.9.4
+    repoURL: 'https://groundhog2k.github.io/helm-charts/'
+    targetRevision: 0.5.13
     chart: mongodb
     helm:
       values: |
-        persistence:
-          storageClass: openebs-hostpath
+        storage:
+          className: openebs-hostpath
   sources: []
   project: default
   syncPolicy:
