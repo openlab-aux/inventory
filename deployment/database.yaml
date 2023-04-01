@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mongodb
+  namespace: argocd
+spec:
+  destination:
+    name: in-cluster
+    namespace: inventory-staging
+  source:
+    repoURL: 'https://charts.bitnami.com/bitnami'
+    targetRevision: 13.9.4
+    chart: mongodb
+  sources: []
+  project: default
+  syncPolicy:
+    automated: null
